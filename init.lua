@@ -12,28 +12,16 @@ vim.api.nvim_set_keymap("i", "<C-BS>", "<C-W>", { noremap = true, silent = true 
 -- Delete word after the cursor in insert mode
 vim.api.nvim_set_keymap("i", "<C-Del>", "<C-O>dw", { noremap = true, silent = true })
 
--- nvim-tree setup (if applicable)
-require("nvim-tree").setup({})
-
--- Function to toggle nvim-tree focus
-local function toggle_nvim_tree_focus()
-  local view = require("nvim-tree.view")
-  if view.is_visible() then
-    if vim.api.nvim_get_current_win() == view.get_winnr() then
-      vim.cmd("wincmd p") -- Switch to the previous window
-    else
-      vim.cmd("NvimTreeFocus") -- Focus nvim-tree
-    end
-  else
-    vim.cmd("NvimTreeToggle") -- Toggle nvim-tree if not visible
-  end
-end
-
 require("nvim-tree").setup({
   sync_root_with_cwd = true, -- Sync nvim-tree with the current directory
   respect_buf_cwd = true, -- Respect the buffer's current directory
   update_cwd = true, -- Change tree's root directory to match cwd
 })
+
+-- Function to toggle nvim-tree focus
+local function toggle_nvim_tree_focus()
+  vim.cmd("NvimTreeFocus")
+end
 
 require("lazy").setup({
   plugins = {
@@ -45,7 +33,7 @@ require("lazy").setup({
       },
       dependencies = {
         { "nvim-lua/plenary.nvim" },
-        { "stevearc/oil-fzf-native.nvim", build = "make" },
+        -- Removed: { "stevearc/oil-fzf-native.nvim", build = "make" },
       },
       config = function()
         require("telescope").setup({
